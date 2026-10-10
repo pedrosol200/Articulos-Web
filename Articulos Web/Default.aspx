@@ -11,10 +11,18 @@
         %>
         <div class="col">
             <div class="card h-100">
-                <img src="<% %> " class="card-img-top" alt="...">
+                <% if (articu.Imagenes.Count > 0)
+                    { %>
+                <img src="<%: articu.Imagenes[0].ImagenUrl %>" class="card-img-top" alt="...">
+                <% }
+                else
+                { %>
+                <img src="https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg" class="card-img-top" alt="Sin imagen">
+                <% } %>
                 <div class="card-body">
-                    <h4 class="card-title"> <%: articu.Nombre %> </h4>
-                    <p class="card-text"> <%: articu.Descripcion %> </p>
+                    <h4 class="card-title"><%: articu.Nombre %> </h4>
+                    <p class="card-text"><%: articu.Descripcion %> </p>
+                    <a href="DetalleArticulo.aspx?id=<%: articu.Id %>">Ver Detalle</a>
                 </div>
             </div>
         </div>
