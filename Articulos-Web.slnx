@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="Articulos Web/Articulos Web.csproj" />
+  <Project Path="../tp-winform-equipo-k-master/Dominio/Dominio.csproj" Id="547fd6e9-6f25-4d8b-b78c-2f7c218a1b67" />
+  <Project Path="../tp-winform-equipo-k-master/Negocio/Negocio.csproj" Id="f09f623f-f1e5-4dbc-bc73-0ff8ebd7d872" />
+  <Project Path="Articulos Web/Articulos Web.csproj" Id="dfb8471c-0a82-49bb-90d2-a272d045ce65" />
 </Solution>
