@@ -48,12 +48,27 @@
                     </div>
                     <div class="mb-3">
                         <asp:Image ImageUrl="https://www.istockphoto.com/es/ilustraciones/placeholder-image"
-                            ID="ImageArticulo" runat="server" Width="60%" class="card-img-top" style="height: 400px;" alt="..." />
+                            ID="ImageArticulo" runat="server" Width="60%" class="card-img-top" Style="height: 400px;" alt="..." />
                     </div>
                     <asp:Label ID="lblDebug" runat="server" Text="Label"></asp:Label>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
+    </div>
+    <div class="row">
+        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+            <ContentTemplate>
+                <div class="mb-3">
+                    <asp:Button runat="server" ID="BtnEliminar" Text="Eliminar" CssClass="btn btn-danger" OnClick="btnEliminar_Click" />
+                </div>
+                <%if (ConfirmarEliminacion) { %>
+                    <div class="mb-3">
+                         <asp:CheckBox ID="ChkConfirmarEliminar" runat="server" Text="Esta seguro de Eliminar?" />
+                         <asp:Button runat="server" ID="Button1" Text="Eliminar" CssClass="btn btn-outline-danger" OnClick="btnConfirmarEliminar_Click" />
+                     </div>
+                <%} %>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
 
 </asp:Content>

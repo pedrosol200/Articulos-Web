@@ -11,9 +11,11 @@ namespace Articulos_Web
 {
     public partial class FormularioArticulo : System.Web.UI.Page
     {
+        public bool ConfirmarEliminacion { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             TxtId.Enabled = false;
+            ConfirmarEliminacion = false;
 
             try
             {
@@ -117,5 +119,19 @@ namespace Articulos_Web
         {
             ImageArticulo.ImageUrl = txtUrlImagen.Text;
         }
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            ConfirmarEliminacion = true;
+        }
+        protected void btnConfirmarEliminar_Click(object sender, EventArgs e)
+        {
+            if (ChkConfirmarEliminar.Checked)
+            {
+                ArticuloNegocio negocio = new ArticuloNegocio();
+                negocio.eliminar(int.Parse(TxtId.Text));
+                Response.Redirect("ArticuloListar.aspx");
+            }
+        }
+
     }
 }
