@@ -13,7 +13,7 @@
             <div class="card h-100">
                 <% if (articu.Imagenes.Count > 0)
                     { %>
-                <img src="<%: articu.Imagenes[0].ImagenUrl %>" class="card-img-top" alt="...">
+                <img src="<%: articu.Imagenes[0].ImagenUrl %>" class="card-img-top" style="height: 400px;" alt="...">
                 <% }
                 else
                 { %>

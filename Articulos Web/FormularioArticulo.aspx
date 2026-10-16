@@ -48,7 +48,7 @@
                     </div>
                     <div class="mb-3">
                         <asp:Image ImageUrl="https://www.istockphoto.com/es/ilustraciones/placeholder-image"
-                            ID="ImageArticulo" runat="server" Width="60%" />
+                            ID="ImageArticulo" runat="server" Width="60%" class="card-img-top" style="height: 400px;" alt="..." />
                     </div>
                     <asp:Label ID="lblDebug" runat="server" Text="Label"></asp:Label>
                 </ContentTemplate>

@@ -14,13 +14,14 @@ namespace Articulos_Web
         protected void Page_Load(object sender, EventArgs e)
         {
             TxtId.Enabled = false;
-            if (!IsPostBack)
-            {
-                MarcaNegocio marcaNegocio = new MarcaNegocio();
-                CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
 
-                try
+            try
+            {
+                if (!IsPostBack)
                 {
+                    MarcaNegocio marcaNegocio = new MarcaNegocio();
+                    CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+
                     // Cargamos el combo de Marcas
                     ddlMarca.DataSource = marcaNegocio.listar();
                     ddlMarca.DataTextField = "Descripcion";
@@ -34,12 +35,40 @@ namespace Articulos_Web
 
                     // Debug
                     lblDebug.Text = "Marcas: " + ddlMarca.Items.Count + " - Categorías: " + ddlCategoria.Items.Count;
+
+                    //configuracion de modificacion
+                    string id = (Request.QueryString["id"] != null) ? Request.QueryString["id"].ToString() : "";
+                    if (id != "")
+                    {
+                        ArticuloNegocio negocio = new ArticuloNegocio();
+                        Articulo articuloModificado = (negocio.listar(id))[0];
+                        articuloModificado.Imagenes = negocio.listarImagenes(int.Parse(id));
+
+                        TxtId.Text = id;
+                        TxtNombre.Text = articuloModificado.Nombre;
+                        TxtCodigo.Text = articuloModificado.Codigo;
+                        txtPrecio.Text = articuloModificado.Precio.ToString();
+                        txtDescripcion.Text = articuloModificado.Descripcion.ToString();
+                        if (articuloModificado.Imagenes.Count > 0)
+                        {
+                            txtUrlImagen.Text = articuloModificado.Imagenes[0].ImagenUrl;
+                            ImageArticulo.ImageUrl = articuloModificado.Imagenes[0].ImagenUrl;
+                        }
+                        if (articuloModificado.Categoria != null)
+                        {
+                            ddlCategoria.SelectedValue = articuloModificado.Categoria.Id.ToString();
+                        }
+                        if (articuloModificado.Marca != null)
+                        {
+                            ddlMarca.SelectedValue = articuloModificado.Marca.Id.ToString();
+                        }
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Session.Add("Error", ex);
-                    Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
-                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("Error", ex);
+                Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
             }
         }
         protected void btnAceptar_Click(object sender, EventArgs e)
@@ -51,18 +80,32 @@ namespace Articulos_Web
                 nuevo.Precio = decimal.Parse(txtPrecio.Text);
                 nuevo.Codigo = TxtCodigo.Text;
                 nuevo.Nombre = TxtNombre.Text;
+
                 Imagen nueva = new Imagen();
                 nueva.ImagenUrl = txtUrlImagen.Text;
                 nuevo.Imagenes.Add(nueva);
+
                 nuevo.Marca = new Marca();
                 nuevo.Marca.Id = int.Parse(ddlMarca.SelectedValue);
+
                 nuevo.Categoria = new Categoria();
                 nuevo.Categoria.Id = int.Parse(ddlCategoria.SelectedValue);
+
                 ArticuloNegocio negocio = new ArticuloNegocio();
-                negocio.agregar(nuevo);
+
+                if (Request.QueryString["id"] != null)
+                {
+                    nuevo.Id = int.Parse(TxtId.Text);
+                    negocio.modificarConSp(nuevo);
+
+                    if (txtUrlImagen.Text != "")
+                    {
+                        negocio.modificarImagenConSp(nuevo.Id, txtUrlImagen.Text);
+                    }
+                }
+                else { negocio.agregar(nuevo); }
+                
                 Response.Redirect("ArticuloListar.aspx", false);
-
-
             }
             catch (Exception ex)
             {
