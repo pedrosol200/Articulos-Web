@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Negocio;
+using Dominio;
 
 namespace Articulos_Web
 {
@@ -13,7 +14,8 @@ namespace Articulos_Web
         protected void Page_Load(object sender, EventArgs e)
         {
             ArticuloNegocio negocio = new ArticuloNegocio();
-            dgvArticulos.DataSource = negocio.listar();
+            Session.Add("listaArticulos", negocio.listar());
+            dgvArticulos.DataSource = Session["listaArticulos"];
             dgvArticulos.DataBind();
 
 
@@ -29,5 +31,12 @@ namespace Articulos_Web
             dgvArticulos.DataBind();
         }
 
+        protected void filtro_TextChanged(object sender, EventArgs e)
+        {
+            List<Articulo> lista = (List<Articulo>)Session["listaArticulos"];
+            List<Articulo> listaFiltrada = lista.FindAll(x => x.Nombre.ToLower().Contains(filtro.Text.ToLower()));
+            dgvArticulos.DataSource = listaFiltrada;
+            dgvArticulos.DataBind();
+        }
     }
 }
