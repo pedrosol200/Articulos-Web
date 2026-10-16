@@ -46,11 +46,21 @@ namespace Articulos_Web
                         Articulo articuloModificado = (negocio.listar(id))[0];
                         articuloModificado.Imagenes = negocio.listarImagenes(int.Parse(id));
 
+                        //Guardo el Articulo
+                        Session.Add("articuloGuardado", articuloModificado);
+
                         TxtId.Text = id;
                         TxtNombre.Text = articuloModificado.Nombre;
                         TxtCodigo.Text = articuloModificado.Codigo;
                         txtPrecio.Text = articuloModificado.Precio.ToString();
                         txtDescripcion.Text = articuloModificado.Descripcion.ToString();
+
+                        //Configurar Acciones
+                        if (!articuloModificado.Activo)
+                        {
+                            btnDesactivar.Text = "Activar";
+                        }
+
                         if (articuloModificado.Imagenes.Count > 0)
                         {
                             txtUrlImagen.Text = articuloModificado.Imagenes[0].ImagenUrl;
@@ -106,7 +116,7 @@ namespace Articulos_Web
                     }
                 }
                 else { negocio.agregar(nuevo); }
-                
+
                 Response.Redirect("ArticuloListar.aspx", false);
             }
             catch (Exception ex)
@@ -131,6 +141,13 @@ namespace Articulos_Web
                 negocio.eliminar(int.Parse(TxtId.Text));
                 Response.Redirect("ArticuloListar.aspx");
             }
+        }
+        protected void btnDesactivar_Click(object sender, EventArgs e)
+        {
+            ArticuloNegocio n = new ArticuloNegocio();
+            Articulo aux = (Articulo)Session["articuloGuardado"];
+            n.eliminarLogicoConSp(aux.Id, !aux.Activo);
+            Response.Redirect("ArticuloListar.aspx");
         }
 
     }

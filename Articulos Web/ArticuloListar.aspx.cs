@@ -13,7 +13,7 @@ namespace Articulos_Web
         protected void Page_Load(object sender, EventArgs e)
         {
             ArticuloNegocio negocio = new ArticuloNegocio();
-            dgvArticulos.DataSource = negocio.listarconSp();
+            dgvArticulos.DataSource = negocio.listar();
             dgvArticulos.DataBind();
 
 
