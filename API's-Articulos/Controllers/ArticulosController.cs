@@ -46,8 +46,8 @@ namespace API_s_Articulos.Controllers
                     img.ImagenUrl = imgDto.Url;
                     nuevo.Imagenes.Add(img);
                 }
-                negocio.agregar(nuevo);
             }
+            negocio.agregarDirecto(nuevo);
         }
 
         // PUT: api/Articulos/5
