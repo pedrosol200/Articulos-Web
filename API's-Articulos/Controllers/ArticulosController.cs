@@ -51,13 +51,34 @@ namespace API_s_Articulos.Controllers
         }
 
         // PUT: api/Articulos/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]ArticulosDto nuevoDto)
         {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            Articulo nuevo = new Articulo();
+            nuevo.Nombre = nuevoDto.Nombre;
+            nuevo.Codigo = nuevoDto.Codigo;
+            nuevo.Descripcion = nuevoDto.Descripcion;
+            nuevo.Marca = new Marca { Id = nuevoDto.IdMarca };
+            nuevo.Categoria = new Categoria { Id = nuevoDto.IdCategoria };
+            nuevo.Precio = nuevoDto.Precio;
+            nuevo.Id = id;
+            if (nuevoDto.Imagenes != null)
+            {
+                foreach (var imgDto in nuevoDto.Imagenes)
+                {
+                    Imagen img = new Imagen();
+                    img.ImagenUrl = imgDto.Url;
+                    nuevo.Imagenes.Add(img);
+                }
+            }
+            negocio.modificarConSp(nuevo);
         }
 
         // DELETE: api/Articulos/5
         public void Delete(int id)
         {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            negocio.eliminarLogicoConSp(id, false);
         }
     }
 }
